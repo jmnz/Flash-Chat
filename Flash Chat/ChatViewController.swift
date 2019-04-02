@@ -16,7 +16,7 @@ class ChatViewController: UIViewController , UITableViewDelegate, UITableViewDat
 
     var messagesArray : [Message] = [Message]()
     
-    // We've pre-linked the IBOutlets
+    // IBOutlets
     @IBOutlet var heightConstraint: NSLayoutConstraint!
     @IBOutlet var sendButton: UIButton!
     @IBOutlet var messageTextfield: UITextField!
@@ -82,8 +82,6 @@ class ChatViewController: UIViewController , UITableViewDelegate, UITableViewDat
         return messagesArray.count
     }
     
-    
-    //TODO: Declare numberOfRowsInSection here:
     
     
     
