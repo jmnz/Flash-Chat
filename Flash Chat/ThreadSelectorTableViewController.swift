@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import ChameleonFramework
 
 class ThreadSelectorTableViewController: UITableViewController {
 
@@ -32,4 +34,16 @@ class ThreadSelectorTableViewController: UITableViewController {
         return 0
     }
 
+
+    @IBAction func LogOut(_ sender: UIBarButtonItem) {
+        
+        do {
+            try Auth.auth().signOut()
+            navigationController?.popToRootViewController(animated: true)
+        }
+        catch {
+            print("error, could not sing out")
+        }
+        
+    }
 }

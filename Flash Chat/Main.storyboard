@@ -161,38 +161,9 @@
             </objects>
             <point key="canvasLocation" x="1086.4000000000001" y="367.91604197901052"/>
         </scene>
-        <!--Table View Controller-->
-        <scene sceneID="mfI-jm-bxc">
-            <objects>
-                <tableViewController id="ldh-dO-LuU" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Irt-d2-PQ6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="WW8-34-G6E">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WW8-34-G6E" id="kb9-fa-p2U">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="ldh-dO-LuU" id="eW0-56-ghs"/>
-                            <outlet property="delegate" destination="ldh-dO-LuU" id="MYq-5I-Hls"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hEo-gU-nqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1830" y="1183"/>
-        </scene>
         <!--Log In-->
         <scene sceneID="Ku8-Lc-W7f">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ewD-vV-GoZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="logInVC" id="xYK-ej-9R9" customClass="LogInViewController" customModule="Flash_Chat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fxq-LK-1OE"/>
@@ -262,8 +233,10 @@
                         <outlet property="emailTextfield" destination="ZWF-xv-G1L" id="A9I-P9-2rL"/>
                         <outlet property="passwordTextfield" destination="zuQ-XP-4Q7" id="FBf-fZ-iYp"/>
                         <segue destination="vXZ-lx-hvc" kind="push" identifier="goToChat" id="rRW-Qd-PQi"/>
+                        <segue destination="o7g-gL-uk7" kind="push" identifier="goToThreads" id="0nL-SI-3nF"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ewD-vV-GoZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1086.4000000000001" y="-416.49175412293857"/>
         </scene>
@@ -356,10 +329,10 @@
             </objects>
             <point key="canvasLocation" x="2129" y="-341"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Conversations-->
         <scene sceneID="Gqp-T0-akc">
             <objects>
-                <tableViewController id="o7g-gL-uk7" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ThreadsVC" id="o7g-gL-uk7" customClass="ThreadSelectorTableViewController" customModule="Flash_Chat" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="pPj-nL-CZX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -379,11 +352,18 @@
                             <outlet property="delegate" destination="o7g-gL-uk7" id="a9O-z3-azd"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Conversations" id="W5R-D1-tix">
+                        <barButtonItem key="rightBarButtonItem" title="Log Out" id="GMb-0W-K5P">
+                            <connections>
+                                <action selector="LogOut:" destination="o7g-gL-uk7" id="qCy-QA-CnB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a7U-yh-fOK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2114" y="367"/>
+            <point key="canvasLocation" x="2034" y="424"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kGX-IT-aXC">
