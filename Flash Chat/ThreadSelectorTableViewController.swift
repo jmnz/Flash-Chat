@@ -11,15 +11,20 @@ import Firebase
 import ChameleonFramework
 
 class ThreadSelectorTableViewController: UITableViewController {
-
+    
+    
+    @IBOutlet var threadsTableView: UITableView!
+    
+    var threadsArray = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        threadsTableView.delegate = self
+        threadsTableView.dataSource = self
+        configuereTableView()
+        retrieveThreads()
+        threadsTableView.separatorStyle = .none
     }
 
     // MARK: - Table view data source
@@ -32,6 +37,34 @@ class ThreadSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 0
+    }
+    
+    func configuereTableView() {
+        threadsTableView.rowHeight = UITableView.automaticDimension
+        threadsTableView.estimatedRowHeight = 120.0
+    }
+    
+    func retrieveThreads() {
+        let messageDB = Database.database().reference().child("Threads")
+        
+        messageDB.observe(.childAdded) { (snapshot) in
+            let snapshotValue = snapshot.value as! Dictionary<String, String>
+            
+            print(snapshotValue)
+            
+            //print(text, sender)
+            
+            //let message = Message(text: text, theSender: sender)
+            
+            //self.threadsArray.append(message)
+            
+            self.configuereTableView()
+            
+            self.threadsTableView.reloadData()
+            
+        }
+        
+        
     }
 
 

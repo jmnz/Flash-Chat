@@ -360,6 +360,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="threadsTableView" destination="pPj-nL-CZX" id="jHz-w2-BWc"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a7U-yh-fOK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
