@@ -15,7 +15,8 @@ class ThreadSelectorTableViewController: UITableViewController {
     
     @IBOutlet var threadsTableView: UITableView!
     
-    var threadsArray = [String]()
+    var threadsArray = [Thread]()
+    let currentUser = Auth.auth().currentUser?.email
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +32,7 @@ class ThreadSelectorTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -48,15 +49,18 @@ class ThreadSelectorTableViewController: UITableViewController {
         let messageDB = Database.database().reference().child("Threads")
         
         messageDB.observe(.childAdded) { (snapshot) in
-            let snapshotValue = snapshot.value as! Dictionary<String, String>
+            let snapshotValue = snapshot.value as! [String:String]
             
-            print(snapshotValue)
+            if snapshotValue["user1"] == self.currentUser {
+                let newThread : Thread = Thread(Id: snapshot.key, User: snapshotValue["user2"]!)
+                self.threadsArray.append(newThread)
+                
+            } else if snapshotValue["user2"] == self.currentUser {
+                let newThread = Thread(Id: snapshot.key, User: snapshotValue["user1"]!)
+                self.threadsArray.append(newThread)
+            }
             
-            //print(text, sender)
-            
-            //let message = Message(text: text, theSender: sender)
-            
-            //self.threadsArray.append(message)
+            //print(self.threadsArray)
             
             self.configuereTableView()
             

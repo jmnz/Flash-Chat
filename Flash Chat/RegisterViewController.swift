@@ -14,6 +14,7 @@ class RegisterViewController: UIViewController {
     
     let usersDB = Database.database().reference().child("Users")
     let ThreadsDB = Database.database().reference().child("Threads")
+    let MessagesDB = Database.database().reference().child("Messages")
     
     //Pre-linked IBOutlets
 
@@ -42,9 +43,9 @@ class RegisterViewController: UIViewController {
                 print("saved to puclic database")
                 self.usersDB.removeAllObservers()
                 self.ThreadsDB.removeAllObservers()
+                self.MessagesDB.removeAllObservers()
                 SVProgressHUD.dismiss()
                 self.navigationController?.popToRootViewController(animated: true)
-//                self.performSegue(withIdentifier: "goToChat", sender: self)
             }
         }
     }
@@ -57,7 +58,8 @@ class RegisterViewController: UIViewController {
         }
         for (user2) in users {
             if UserMail != user2 {
-                let thread : [String:String] = ["user1": UserMail, "user2":user2]
+                let messagesThreadId = createMessageStorage()
+                let thread : [String:String] = ["user1": UserMail, "user2":user2, "messagesKey":messagesThreadId]
                 print(thread)
                 self.ThreadsDB.childByAutoId().setValue(thread) {
                     (error, reference) in
@@ -89,6 +91,17 @@ class RegisterViewController: UIViewController {
                 self.saveUser()
             }
         }
+    }
+    
+    func createMessageStorage() -> String {
+        let newMessageStore = self.MessagesDB.childByAutoId()
+        newMessageStore.setValue("empty") {
+            (error, reference) in
+            if error != nil {
+                print(error!)
+            }
+        }
+        return newMessageStore.key!
     }
 
   
