@@ -23,6 +23,7 @@ class ThreadSelectorTableViewController: UITableViewController {
 
         threadsTableView.delegate = self
         threadsTableView.dataSource = self
+        threadsTableView.register(UINib(nibName: "CustomThreadCell", bundle: nil), forCellReuseIdentifier: "customThreadCell")
         configuereTableView()
         retrieveThreads()
         threadsTableView.separatorStyle = .none
@@ -37,11 +38,19 @@ class ThreadSelectorTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return threadsArray.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customThreadCell", for: indexPath) as! CustomThreadCell
+        cell.userAvatar.image = UIImage(named: "egg")
+        cell.userName.text = threadsArray[indexPath.row].user
+        
+        return cell
     }
     
     func configuereTableView() {
-        threadsTableView.rowHeight = UITableView.automaticDimension
+        threadsTableView.rowHeight = 80
         threadsTableView.estimatedRowHeight = 120.0
     }
     
