@@ -13,7 +13,7 @@ import ChameleonFramework
 class ChatViewController: UIViewController , UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     // Declare instance variables here
-
+    var chatId : String = ""
     var messagesArray : [Message] = [Message]()
     
     // IBOutlets
@@ -136,16 +136,16 @@ class ChatViewController: UIViewController , UITableViewDelegate, UITableViewDat
     
     
     @IBAction func sendPressed(_ sender: AnyObject) {
-        
+
         messageTextfield.endEditing(true)
         //TODO: Send the message to Firebase and save it in our database
         messageTextfield.isEnabled = false
         sendButton.isEnabled = false
-        
-        let messagesDB = Database.database().reference().child("Messages")
-        
+
+        let messagesDB = Database.database().reference().child("Messages/\(self.chatId)")
+
         let messageDictionary = ["Sender" : Auth.auth().currentUser?.email, "MessageBody" : messageTextfield.text ]
-        
+
         messagesDB.childByAutoId().setValue(messageDictionary) {
             (error, reference) in
             if error != nil {
@@ -156,33 +156,32 @@ class ChatViewController: UIViewController , UITableViewDelegate, UITableViewDat
                 self.sendButton.isEnabled = true
             }
         }
-        
+
     }
     
     //TODO: Create the retrieveMessages method here:
     
     func retrieveMessages() {
-        let messageDB = Database.database().reference().child("Messages")
-        
-        messageDB.observe(.childAdded) { (snapshot) in
-            let snapshotValue = snapshot.value as! Dictionary<String, String>
-            
-            let text = snapshotValue["MessageBody"]!
-            let sender = snapshotValue["Sender"]!
-            
-            print(text, sender)
-            
-            let message = Message(text: text, theSender: sender)
-            
-            self.messagesArray.append(message)
-            
-            self.configuereTableView()
-            
-            self.messageTableView.reloadData()
-            
-        }
+        let messagesDB = Database.database().reference().child("Messages")
+        let currentThreadDB = Database.database().reference().child("Messages/\(self.chatId)")
         
         
+        messagesDB.observe(.value, with: { (DataSnapshot) in
+            if let _ = DataSnapshot.value as? [String:String] {
+                let emptyMessage = Message(text: "be the fisrt to say hi", theSender: "bot")
+                self.messagesArray.append(emptyMessage)
+                self.messageTableView.reloadData()
+                print("no messages")
+            } else {
+                messagesDB.removeAllObservers()
+                currentThreadDB.observe(.childAdded, with: { (DataSnapshot) in
+                    let snapshotValue = DataSnapshot.value as! [String:String]
+                    let newMessage = Message(text: snapshotValue["MessageBody"]!, theSender: snapshotValue["Sender"]!)
+                    self.messagesArray.append(newMessage)
+                    self.messageTableView.reloadData()
+                })
+            }
+        })
     }
     
     

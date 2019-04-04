@@ -17,6 +17,7 @@ class ThreadSelectorTableViewController: UITableViewController {
     
     var threadsArray = [Thread]()
     let currentUser = Auth.auth().currentUser?.email
+    var selectedChat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,12 @@ class ThreadSelectorTableViewController: UITableViewController {
         return threadsArray.count
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedChat = indexPath.row
+        print(selectedChat)
+        self.performSegue(withIdentifier: "goToMessages", sender: self)
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "customThreadCell", for: indexPath) as! CustomThreadCell
         cell.userAvatar.image = UIImage(named: "egg")
@@ -61,15 +68,13 @@ class ThreadSelectorTableViewController: UITableViewController {
             let snapshotValue = snapshot.value as! [String:String]
             
             if snapshotValue["user1"] == self.currentUser {
-                let newThread : Thread = Thread(Id: snapshot.key, User: snapshotValue["user2"]!)
+                let newThread : Thread = Thread(Id: snapshotValue["messagesKey"]!, User: snapshotValue["user2"]!)
                 self.threadsArray.append(newThread)
                 
             } else if snapshotValue["user2"] == self.currentUser {
-                let newThread = Thread(Id: snapshot.key, User: snapshotValue["user1"]!)
+                let newThread = Thread(Id: snapshotValue["messagesKey"]!, User: snapshotValue["user1"]!)
                 self.threadsArray.append(newThread)
             }
-            
-            //print(self.threadsArray)
             
             self.configuereTableView()
             
@@ -78,6 +83,11 @@ class ThreadSelectorTableViewController: UITableViewController {
         }
         
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let chatVC = segue.destination as! ChatViewController
+        chatVC.chatId = self.threadsArray[selectedChat].id
     }
 
 
